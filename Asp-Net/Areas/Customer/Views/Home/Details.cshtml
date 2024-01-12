@@ -1,0 +1,40 @@
+﻿@using Asp_Net.Models.ViewModels
+@model Koszyk
+
+<form method="post">
+    <input asp-for="ProduktId" hidden />
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">@Model.Produkt.Nazwa</h3>
+            <h6 class="card-subtitle pt-2" >@Model.Produkt.Kategoria.Nazwa</h6>
+            <div class="row">
+                <div class="col-lg-5 col-md-5 col-sm-6 pt-4">
+                    <div><img width="100%" src="@Model.Produkt.ImageUrl" ></div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-6">
+                    <h4 class="box-title mt-5">Opis produktu</h4>
+                    <p>@Model.Produkt.Opis</p>
+                    <h2 class="mt-5">
+                        @Model.Produkt.ListaCen Zł
+                    </h2>
+                    <button type="submit" value="Dodaj do koszyka" class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="">Dodaj do koszyka</button>
+                    <a asp-action="Index" class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="" >
+                        Wróć do listy
+                    </a>
+                    <div class="row pl-2 pt-4">
+                        <div class="col-2 text-primary"><h4>Ilość</h4></div>
+                        <div class="col-6"><input asp-for="Ilosc" class="form-control" /></div>
+                    </div>
+                    <h3 class="box-title mt-5">Ceny</h3>
+                    <ul class="list-unstyled">  
+                            <li>Ilość 1-50 : @Model.Produkt.Cena.ToString("c")</li>
+                            <li>Ilość 50-100 : @Model.Produkt.Od50.ToString("c")</li>
+                            <li>Ilość 100+ : @Model.Produkt.Od100.ToString("c")</li>
+                    </ul>   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

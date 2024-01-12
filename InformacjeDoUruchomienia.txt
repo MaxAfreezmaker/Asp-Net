@@ -1,0 +1,21 @@
+Ca³oœæ aplikacji zosta³a stworzona na Wersji .NET(6.0)
+
+1) zmieniæ œcie¿kê do swojego lokalnego serwera Sql w pliku appsettings.json
+
+	 przyk³adowy ConnectionString: 
+
+		"ConnectionStrings": {
+    "DefaultConnection": "Data Source={nazwakomputera}; Database=Asp-Project; Trusted_Connection=True;"
+  }
+
+  * w miejsce  "nazwakomputera"  wstawiæ swoje po³aczenie które mo¿na skopiowaæ w trakcie uruchamiania SQL Server Mangment Studio.
+
+2) nastêpnie wywo³aæ komende: "update-database" 
+
+3) Aplikacja zosta³a stworzona aby samodzielnie dodawac rekordy do bazy.
+
+4) Dodawanie do bazy rekordów jest mo¿liwe tylko z poziomu Admina którego nale¿y utworzyæ po przez Zarejestrowanie siê i wybraniu przy rejestracji z pola "Role" opcji "Admin"
+
+5) Aplikacja nie pozwala zwyk³emu u¿ytkownikowi na podgl¹d,dodawanie lub usuwanie Produktów czy Kategorii z Bazy.
+
+

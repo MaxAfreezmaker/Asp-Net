@@ -1,0 +1,50 @@
+﻿
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Lista Produktów</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
+               <i class="bi bi-plus-circle"></i> &nbsp; Dodaj nowy produkt
+            </a>
+        </div>
+    </div>
+</div>
+<br /><br />
+
+<table id="myTableId" class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Nazwa Produktu</th>
+            <th>Cena</th>
+            <th>Pochodzenie</th>
+            <th>Kategoria</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produkt in Model)
+        {
+            <tr>
+                <td>@produkt.Nazwa</td>
+                <td>@produkt.Cena</td>
+                <td>@produkt.Pochodzenie</td>
+                <td>@produkt.Kategoria.Nazwa</td>
+                <td>
+                    <img src="@Url.Content(produkt.ImageUrl)" alt="Obrazek" style="max-width: 100px; max-height: 100px;" />
+                </td>
+                <td>
+                    <a href="/Admin/Product/Upsert?id=@produkt.Id" class="btn btn-primary">
+                        <i class="bi bi-pencil-square"></i> Edytuj
+                    </a>
+                    <a href="/Admin/Product/Delete/@produkt.Id" class="btn btn-danger">
+                        <i class="bi bi-trash-fill"></i> Usuń
+                    </a>
+                </td>
+            </tr>
+            
+        }
+    </tbody>
+</table>
+

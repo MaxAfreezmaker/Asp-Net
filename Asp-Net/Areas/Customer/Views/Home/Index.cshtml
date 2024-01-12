@@ -1,0 +1,52 @@
+﻿@using Asp_Net.Utility
+@model IEnumerable<Asp_Net.Models.Produkt>
+
+@if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Customer))
+{
+    @foreach (var item in Model)
+    {
+        <div class="container mt-5 mb-5">   
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-10">
+                    <div class="row p-2 bg-white border rounded">
+                        <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="@item.ImageUrl"></div>
+                        <div class="col-md-6 mt-1">
+                            <h5>@item.Nazwa</h5>
+                            <div class="d-flex flex-row">
+                                <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>@item.Kategoria.Nazwa</span>
+                            </div>
+                            <div class="mt-1 mb-1 spec-1"><span>Pochodzenie: @item.Pochodzenie</span></div>
+                            <p class="text-justify text-truncate para mb-0">Opis: @item.Opis<br><br></p>
+                        </div>
+                        <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                            <div class="d-flex flex-row align-items-center">
+                                <h4 class="mr-1">@item.Od100.ToString("c")</h4><span class="strike-text">@item.Cena.ToString("c")</span>
+                            </div>
+                            <h6 class="text-success">Darmowa dostawa</h6>
+                            <div class="d-flex flex-column mt-4">  <a asp-action="Details" asp-route-productId = "@item.Id" class="btn btn-primary btn-sm" type="button">Szczegóły</a></div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <section class=" py-7 py-md-0 bg-hero" id="home">
+    <div class="container pt-5">
+        <div class="row vh-md-100">
+            <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
+                <h1 class="heading-black text-capitalize">Projekt Aplikacji do Zarządzania Hurtownią</h1>
+                <p class="lead py-3">Projekt umożliwia dodawanie, usuwanie, edytowanie produktów ich kategorii, umożliwia użytkownikowi także ich kupno.<br /> Zarejestruj się jako aby zacząć!</p>
+               <a asp-area="Identity" asp-controller="Account" asp-action="Register">
+                   <button class="btn btn-primary d-inline-flex flex-row align-items-center">
+                    Zacznij już teraz !
+                    <em class="ml-2" data-feather="arrow-right"></em>
+                   </button>
+               </a>
+            </div>
+        </div>
+    </div>
+    </section>
+}

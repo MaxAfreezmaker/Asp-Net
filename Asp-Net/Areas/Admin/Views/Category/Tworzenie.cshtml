@@ -1,0 +1,30 @@
+﻿@model Kategoria
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Utwórz kategorię</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Nazwa">Podaj nazwę kategorii. </label>
+            <input asp-for="Nazwa" class="form-control" />
+            <span asp-validation-for="Nazwa" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="KolejnoscWyswietlania">Ustal jak chcesz upozycjonować produkt.</label>
+            <input asp-for="KolejnoscWyswietlania" class="form-control" />
+            <span asp-validation-for="KolejnoscWyswietlania" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Stwórz Kategorie</button>
+        <a asp-controller="Category" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Wróć do listy.
+        </a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+      <partial name="_ValidationScriptsPartial"/>
+    }
+}

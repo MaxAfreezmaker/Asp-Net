@@ -1,0 +1,171 @@
+﻿@model Asp_Net.Models.ViewModels.ViewModelProdukt
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Produkt.Id" hidden/>
+    <input asp-for="Produkt.ImageUrl" hidden/>
+
+    <div class="row">
+        <div class="col-10">      
+    <div class="border p-3 mt-4 row">
+        <div class="col-12 pb-2">
+            <h2 class="text-primary">@(Model.Produkt.Id!=0?"Update" : "Create") Produkt</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produkt.Nazwa"></label>
+            <input asp-for="Produkt.Nazwa" class="form-control" />
+            <span asp-validation-for="Produkt.Nazwa" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produkt.Opis"></label>
+            <textarea asp-for="Produkt.Opis" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Produkt.Opis" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Produkt.Pochodzenie"></label>
+            <input asp-for="Produkt.Pochodzenie" class="form-control" />
+            <span asp-validation-for="Produkt.Pochodzenie" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.ListaCen"></label>
+            <input asp-for="Produkt.ListaCen" class="form-control" />
+            <span asp-validation-for="Produkt.ListaCen" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.Cena"></label>
+            <input asp-for="Produkt.Cena" class="form-control" />
+            <span asp-validation-for="Produkt.Cena" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.Od50"></label>
+            <input asp-for="Produkt.Od50" class="form-control" />
+            <span asp-validation-for="Produkt.Od50" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.Od100"></label>
+            <input asp-for="Produkt.Od100" class="form-control" />
+            <span asp-validation-for="Produkt.Od100" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.KategoriaId"></label>
+            <select asp-for="Produkt.KategoriaId" asp-items="@Model.listaKategorii" class="form-select">
+                <option disabled selected>--Wybierz kategorie--</option>
+            </select>
+            <span asp-validation-for="Produkt.KategoriaId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Produkt.ImageUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control" />
+        </div>
+                <div class="col-12">
+                    <button type="submit" id="updateButton" class="btn btn-primary" style="width:150px">Uaktualnij</button>
+                    <button type="submit" id="addButton" class="btn btn-primary" style="width:150px">Dodaj</button>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                        Wróć do listy
+                    </a>
+                </div>
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#updateButton').on('click', function () {
+                updateProduct();
+            });
+
+            $('#addButton').on('click', function () {
+                addNewProduct();
+            });
+        });
+
+        function updateProduct() {
+            $.ajax({
+                url: '/Admin/Product/Upsert',
+                type: 'POST',
+                data: new FormData($('#myForm')[0]),
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        window.location.href = response.redirectTo; 
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function addNewProduct() {
+            var form = $("#myForm")[0];
+            var formData = new FormData(form);
+
+            if (document.getElementById("uploadBox").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Wprowadź zdjęcie produktu',
+                });
+                return false;
+            }
+
+            var productId = $("#Produkt_Id").val();
+
+            $.ajax({
+                url: '/Admin/Product/CheckIfExists/' + productId,
+                type: 'GET',
+                success: function (response) {
+                    if (response.exists) {
+                        updateProduct();
+                    } else {
+                        $.ajax({
+                            url: '/Admin/Product/AddNewProduct',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response.success) {
+                                    toastr.success(response.message);
+                                    window.location.href = response.redirectTo;
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function validateForm() {
+            var isFormValid = true;
+
+            if ($("#Nazwa").val() === "") {
+                isFormValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Uzupełnij pole Nazwa',
+                });
+            }
+            return isFormValid;
+        }
+    </script>
+}
+
